@@ -1,51 +1,57 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import { Play } from "lucide-react";
 
-import { DashboardMock } from "@/components/landing/app-mocks";
 import { ConsultationModal } from "@/components/landing/consultation-modal";
 import { ProductTourModal } from "@/components/landing/product-tour-modal";
-import { ProductWindow } from "@/components/landing/product-window";
-import { Reveal } from "@/components/landing/reveal";
+
+const HERO_BG = "#022848";
+const HERO_GOLD = "#EDB254";
 
 export function Hero() {
   return (
-    <section className="relative isolate overflow-hidden bg-[#0D2536] pt-24 pb-16 text-white sm:pt-28 sm:pb-20">
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(196,154,85,0.14),transparent_45%),radial-gradient(ellipse_at_bottom_left,rgba(21,51,74,0.9),transparent_50%)]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.18] [background-image:radial-gradient(circle_at_1px_1px,rgba(196,154,85,0.4)_1px,transparent_0)] [background-size:24px_24px]"
-        aria-hidden
-      />
+    <section
+      id="home"
+      className="relative overflow-hidden text-white"
+      style={{ backgroundColor: HERO_BG }}
+    >
+      {/* Backdrop extends under the transparent header — no seam */}
+      <div className="absolute inset-0">
+        <Image
+          src="/brand/bg.png"
+          alt=""
+          fill
+          priority
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+      </div>
 
-      <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12 lg:px-8">
-        <div>
-          <p className="animate-fade-up font-[family-name:var(--font-display)] text-2xl tracking-tight text-[#C49A55] sm:text-3xl">
-            Ngaris Managed
+      <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 px-4 pt-28 pb-12 sm:px-6 sm:pt-32 sm:pb-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-6 lg:px-8 lg:pb-16">
+        <div className="max-w-xl">
+          <p className="animate-fade-up text-[11px] font-semibold tracking-[0.2em] text-white/75 uppercase">
+            Construction &amp; Property Management
           </p>
           <div
-            className="animate-draw-line mt-3 mb-5 h-px w-16 bg-[#C49A55]"
+            className="animate-fade-up animation-delay-100 mt-3 h-px w-14"
+            style={{ backgroundColor: HERO_GOLD }}
             aria-hidden
           />
-          <h1 className="animate-fade-up animation-delay-100 font-[family-name:var(--font-display)] text-4xl leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+          <h1 className="animate-fade-up animation-delay-100 mt-4 text-4xl leading-[1.08] font-bold tracking-tight sm:text-5xl lg:text-[3.25rem]">
             Build in Zimbabwe.
             <br />
-            Manage from Anywhere.
+            <span style={{ color: HERO_GOLD }}>Manage from Anywhere.</span>
           </h1>
-          <p className="animate-fade-up animation-delay-200 mt-4 max-w-md text-sm leading-relaxed text-white/70 sm:text-base">
-            Construction ops software for diaspora owners and local teams —
-            progress, approvals, and payments in one workspace.
-          </p>
-          <div className="animate-fade-up animation-delay-300 mt-7 flex flex-wrap gap-3">
+          <div className="animate-fade-up animation-delay-200 mt-8 flex flex-wrap gap-3">
             <ConsultationModal
               trigger={
                 <button
                   type="button"
-                  className="cta-shine inline-flex h-11 items-center rounded-lg bg-[#C49A55] px-5 text-sm font-medium text-[#0D2536] transition-[transform,background-color] duration-300 hover:-translate-y-0.5 hover:bg-[#d4ae6d]"
+                  className="inline-flex h-11 items-center rounded-lg px-5 text-sm font-semibold transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: HERO_GOLD, color: HERO_BG }}
                 >
-                  Book consultation
+                  Start Your Project →
                 </button>
               }
             />
@@ -53,21 +59,29 @@ export function Hero() {
               trigger={
                 <button
                   type="button"
-                  className="inline-flex h-11 items-center gap-1.5 rounded-lg border border-white/25 bg-white/5 px-5 text-sm font-medium text-white backdrop-blur-sm transition-[transform,background-color] duration-300 hover:-translate-y-0.5 hover:bg-white/10"
+                  className="inline-flex h-11 items-center gap-2 rounded-lg border border-white/35 px-5 text-sm font-medium text-white transition-colors hover:border-white/55 hover:bg-white/5"
                 >
-                  Open product tour
-                  <ArrowUpRight className="h-4 w-4" />
+                  <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-white/45">
+                    <Play className="h-2.5 w-2.5 fill-white" />
+                  </span>
+                  See How It Works
                 </button>
               }
             />
           </div>
         </div>
 
-        <Reveal className="animate-fade-up animation-delay-200">
-          <ProductWindow title="dashboard">
-            <DashboardMock />
-          </ProductWindow>
-        </Reveal>
+        <div className="animate-fade-up animation-delay-200 relative mx-auto w-full max-w-[560px] lg:max-w-none">
+          <Image
+            src="/brand/laptop.png"
+            alt="Ngaris Managed project dashboard on laptop"
+            width={1536}
+            height={1024}
+            priority
+            className="h-auto w-full drop-shadow-[0_30px_60px_rgba(0,0,0,0.45)]"
+            sizes="(max-width: 1024px) 90vw, 560px"
+          />
+        </div>
       </div>
     </section>
   );

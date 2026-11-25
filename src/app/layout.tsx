@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
-import { DM_Sans, Fraunces } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 
 import "./globals.css";
 
-const dmSans = DM_Sans({
+const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
-  subsets: ["latin"],
-});
-
-const fraunces = Fraunces({
-  variable: "--font-display",
   subsets: ["latin"],
 });
 
@@ -19,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s · Ngaris Managed",
   },
   description:
-    "Ngaris Managed provides accountable construction management for Zimbabwe builds — verified progress, financial controls, and diaspora-ready project tracking.",
+    "Construction and property management software for Zimbabwe builds — verified progress, financial controls, and diaspora-ready tracking.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   ),
@@ -27,11 +22,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${dmSans.variable} ${fraunces.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-[#F8FAFC] font-sans text-[#15334A]">
+    <html lang="en" className={`${plusJakarta.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-white font-sans text-[#032842]">
         {children}
       </body>
     </html>

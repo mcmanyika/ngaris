@@ -1,31 +1,34 @@
 "use client";
 
+import { Home } from "lucide-react";
+import Link from "next/link";
+
 import { ConsultationModal } from "@/components/landing/consultation-modal";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-white/10 bg-[#0D2536] py-12 text-white">
-      <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:flex-row sm:items-end sm:justify-between sm:px-6 lg:px-8">
-        <div>
-          <p className="font-[family-name:var(--font-display)] text-xl">
-            Ngaris <span className="text-[#C49A55]">Managed</span>
-          </p>
-          <p className="mt-2 max-w-sm text-sm leading-relaxed text-white/65">
-            Construction ops software for Zimbabwe builds.
-          </p>
-        </div>
-        <div className="text-sm text-white/55">
+    <footer className="border-t border-[#032842]/8 bg-white py-8">
+      <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+        <Link href="/" className="flex items-center gap-2 text-[#032842]">
+          <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-[#EDB254]/15 text-[#EDB254]">
+            <Home className="h-3.5 w-3.5" />
+          </span>
+          <span className="text-sm font-semibold">
+            Ngaris <span className="text-[#EDB254]">Managed</span>
+          </span>
+        </Link>
+        <div className="flex items-center gap-4 text-sm text-[#032842]/55">
           <ConsultationModal
             trigger={
               <button
                 type="button"
-                className="transition-colors duration-300 hover:text-[#C49A55]"
+                className="transition-colors hover:text-[#032842]"
               >
-                Book a consultation
+                Get a Quote
               </button>
             }
           />
-          <p className="mt-3">© 2026 Ngaris Managed. All rights reserved.</p>
+          <span>© 2026</span>
         </div>
       </div>
     </footer>

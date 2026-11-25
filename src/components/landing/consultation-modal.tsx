@@ -20,13 +20,13 @@ export function ConsultationModal({ trigger }: ConsultationModalProps) {
   return (
     <Dialog>
       <DialogTrigger render={trigger} />
-      <DialogContent className="max-h-[90vh] overflow-y-auto border-white/10 bg-[#0D2536] text-white sm:max-w-lg">
+      <DialogContent className="max-h-[90vh] overflow-y-auto border-[#032842]/10 bg-[#032842] text-white sm:max-w-lg">
         <DialogHeader>
-          <DialogTitle className="font-[family-name:var(--font-display)] text-xl text-white">
-            Book a consultation
+          <DialogTitle className="text-xl font-semibold text-white">
+            Get a Quote
           </DialogTitle>
           <DialogDescription className="text-white/65">
-            Tell us about the build. We’ll follow up securely.
+            Tell us about your project. We’ll follow up securely.
           </DialogDescription>
         </DialogHeader>
         <ConsultationFormPanel />

@@ -33,10 +33,10 @@ const budgetLabels: Record<(typeof leadBudgetRanges)[number], string> = {
 };
 
 const fieldControlClass =
-  "border-white/25 bg-white/5 text-white placeholder:text-white/45 focus-visible:border-[#C49A55] focus-visible:ring-[#C49A55]/25";
+  "border-white/25 bg-white/5 text-white placeholder:text-white/45 focus-visible:border-[#EDB254] focus-visible:ring-[#EDB254]/25";
 
 const selectClass =
-  "h-8 w-full rounded-lg border border-white/25 bg-white/5 px-2.5 text-sm text-white outline-none focus-visible:border-[#C49A55] focus-visible:ring-3 focus-visible:ring-[#C49A55]/25 [&>option]:bg-[#0D2536] [&>option]:text-white";
+  "h-8 w-full rounded-lg border border-white/25 bg-white/5 px-2.5 text-sm text-white outline-none focus-visible:border-[#EDB254] focus-visible:ring-3 focus-visible:ring-[#EDB254]/25 [&>option]:bg-[#032842] [&>option]:text-white";
 
 export function ConsultationFormPanel() {
   const [serverError, setServerError] = useState<string | null>(null);
@@ -95,7 +95,7 @@ export function ConsultationFormPanel() {
         </p>
         <button
           type="button"
-          className="mt-6 self-start text-sm font-medium text-[#C49A55] underline underline-offset-4"
+          className="mt-6 self-start text-sm font-medium text-[#EDB254] underline underline-offset-4"
           onClick={() => setSubmitted(false)}
         >
           Submit another enquiry
@@ -226,7 +226,7 @@ export function ConsultationFormPanel() {
       <Button
         type="submit"
         disabled={isSubmitting}
-        className="cta-shine h-10 w-full bg-[#C49A55] text-[#0D2536] hover:bg-[#d4ae6d] sm:w-auto sm:px-6"
+        className="h-10 w-full bg-[#EDB254] font-semibold text-[#032842] hover:bg-[#f2bc60] sm:w-auto sm:px-6"
       >
         {isSubmitting ? "Sending…" : "Request consultation"}
       </Button>
