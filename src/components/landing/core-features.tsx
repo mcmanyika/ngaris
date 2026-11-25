@@ -1,20 +1,76 @@
 "use client";
 
 import {
-  BarChart3,
+  BadgeCheck,
   CheckCircle2,
-  ImageIcon,
-  Laptop,
-  ShieldCheck,
+  FolderKanban,
+  Handshake,
+  Users,
 } from "lucide-react";
 
 import { Reveal } from "@/components/landing/reveal";
 
 const features = [
   {
-    icon: Laptop,
-    title: "Project Tracking",
-    description: "Phase, timeline, and ownership in one live view.",
+    icon: BadgeCheck,
+    title: "Verified Providers",
+    description:
+      "We vet contractors and trades so you only shortlist people we trust.",
+    hint: (
+      <div className="mt-auto space-y-2 pt-6">
+        <div className="flex items-center justify-between rounded-lg border border-[#032842]/[0.06] bg-[#F7F9FB] px-3 py-2.5">
+          <div className="min-w-0">
+            <p className="truncate text-[11px] font-medium text-[#032842]">
+              Horizon Builders
+            </p>
+            <p className="text-[10px] text-[#032842]/40">Harare · Structural</p>
+          </div>
+          <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-600/10">
+            <CheckCircle2 className="h-3 w-3" />
+            Verified
+          </span>
+        </div>
+        <p className="text-[10px] text-[#032842]/40">
+          Checks: refs · insurance · past work
+        </p>
+      </div>
+    ),
+  },
+  {
+    icon: Handshake,
+    title: "Select Together",
+    description:
+      "We shortlist options and decide with you — not behind your back.",
+    hint: (
+      <div className="mt-auto space-y-2 pt-6">
+        {[
+          { name: "Option A · Fit-out", status: "Recommended" },
+          { name: "Option B · Fit-out", status: "Shortlisted" },
+        ].map((row, i) => (
+          <div
+            key={row.name}
+            className="flex items-center justify-between rounded-lg border border-[#032842]/[0.06] bg-white px-3 py-2"
+          >
+            <p className="truncate text-[11px] font-medium text-[#032842]">
+              {row.name}
+            </p>
+            <span
+              className={`text-[10px] font-semibold ${
+                i === 0 ? "text-[#EDB254]" : "text-[#032842]/40"
+              }`}
+            >
+              {row.status}
+            </span>
+          </div>
+        ))}
+      </div>
+    ),
+  },
+  {
+    icon: FolderKanban,
+    title: "Project Management",
+    description:
+      "We coordinate the build — schedules, site, and day-to-day delivery.",
     hint: (
       <div className="mt-auto space-y-3 pt-6">
         <div className="flex items-center justify-between text-[11px]">
@@ -32,9 +88,10 @@ const features = [
     ),
   },
   {
-    icon: ImageIcon,
-    title: "Site Updates",
-    description: "Photo reports and notes from the ground.",
+    icon: Users,
+    title: "Client Oversight",
+    description:
+      "Approvals, spend, and site updates — clear for diaspora owners abroad.",
     hint: (
       <div className="mt-auto space-y-2.5 pt-6">
         <div className="grid grid-cols-3 gap-1.5">
@@ -50,53 +107,7 @@ const features = [
         </div>
         <div className="flex items-center gap-2 text-[10px] text-[#032842]/45">
           <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          3 new photos · Harare site
-        </div>
-      </div>
-    ),
-  },
-  {
-    icon: ShieldCheck,
-    title: "Approvals",
-    description: "Clear decisions with a full audit trail.",
-    hint: (
-      <div className="mt-auto space-y-2 pt-6">
-        <div className="flex items-center justify-between rounded-lg border border-[#032842]/[0.06] bg-[#F7F9FB] px-3 py-2.5">
-          <div className="min-w-0">
-            <p className="truncate text-[11px] font-medium text-[#032842]">
-              Material drawdown
-            </p>
-            <p className="text-[10px] text-[#032842]/40">Awaiting you</p>
-          </div>
-          <span className="inline-flex items-center gap-1 rounded-md bg-emerald-50 px-2 py-1 text-[10px] font-semibold text-emerald-700 ring-1 ring-emerald-600/10">
-            <CheckCircle2 className="h-3 w-3" />
-            Verified
-          </span>
-        </div>
-        <p className="text-[10px] text-[#032842]/40">Signed · 14 Mar 2026</p>
-      </div>
-    ),
-  },
-  {
-    icon: BarChart3,
-    title: "Cost Control",
-    description: "Budget vs spend before surprises land.",
-    hint: (
-      <div className="mt-auto space-y-3 pt-6">
-        <div className="flex h-12 items-end gap-1.5">
-          {[36, 58, 44, 78, 52, 66].map((h, i) => (
-            <div
-              key={i}
-              className="feature-bar flex-1 rounded-sm bg-[#032842]/15 first:bg-[#032842]/25 last:bg-[#EDB254]"
-              style={{ height: `${h}%`, animationDelay: `${i * 60}ms` }}
-            />
-          ))}
-        </div>
-        <div className="flex items-center justify-between text-[10px]">
-          <span className="text-[#032842]/40">Budget used</span>
-          <span className="font-semibold tabular-nums text-[#032842]">
-            $42.8k / $65k
-          </span>
+          Site report ready · Your review
         </div>
       </div>
     ),
@@ -109,14 +120,15 @@ export function CoreFeatures() {
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <Reveal className="mb-12 max-w-xl sm:mx-auto sm:text-center">
           <p className="text-[11px] font-semibold tracking-[0.2em] text-[#EDB254] uppercase">
-            Platform
+            How it works
           </p>
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#032842] sm:text-[2.15rem]">
-            Built for remote oversight
+            Find the right team. We manage the rest.
           </h2>
           <p className="mt-3 text-sm leading-relaxed text-[#032842]/55 sm:text-[15px]">
-            Everything your team needs to run construction and property work —
-            visible, decision-ready, and easy to act on from abroad.
+            Ngaris Managed connects clients — especially the diaspora — with
+            verified service providers, helps you select together, and runs the
+            project with clear oversight from anywhere.
           </p>
         </Reveal>
 

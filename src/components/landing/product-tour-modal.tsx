@@ -26,7 +26,8 @@ export function ProductTourModal({ trigger }: ProductTourModalProps) {
             See how it works
           </DialogTitle>
           <DialogDescription className="text-white/60">
-            Live project tracking from anywhere.
+            Verified providers, joint selection, and managed delivery — tracked
+            from anywhere.
           </DialogDescription>
         </DialogHeader>
         <div className="p-4">

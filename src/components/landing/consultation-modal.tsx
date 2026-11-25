@@ -26,7 +26,8 @@ export function ConsultationModal({ trigger }: ConsultationModalProps) {
             Get a Quote
           </DialogTitle>
           <DialogDescription className="text-white/65">
-            Tell us about your project. We’ll follow up securely.
+            Tell us about your project — we’ll help identify verified providers
+            and manage delivery with you.
           </DialogDescription>
         </DialogHeader>
         <ConsultationFormPanel />

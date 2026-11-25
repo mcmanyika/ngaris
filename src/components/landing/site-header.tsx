@@ -12,8 +12,8 @@ const HERO_GOLD = "#EDB254";
 
 const navItems = [
   { href: "#home", label: "Home" },
-  { href: "#features", label: "Features" },
-  { href: "#diaspora", label: "About" },
+  { href: "#features", label: "How it works" },
+  { href: "#diaspora", label: "Diaspora" },
 ];
 
 export function SiteHeader() {

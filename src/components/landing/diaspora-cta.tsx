@@ -23,13 +23,18 @@ export function DiasporaCta() {
             </div>
 
             <div className="flex flex-col justify-center gap-6 p-8 sm:p-10 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:p-12">
-              <div>
+              <div className="max-w-md">
                 <p className="text-[11px] font-semibold tracking-[0.18em] text-[#EDB254] uppercase">
                   For the Diaspora
                 </p>
                 <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                  Your Property, In Control.
+                  Trusted providers. Managed for you.
                 </h2>
+                <p className="mt-3 text-sm leading-relaxed text-white/65">
+                  Building or renovating from abroad? We verify service
+                  providers, select with you, and manage the project so your
+                  property stays in control.
+                </p>
               </div>
               <ConsultationModal
                 trigger={

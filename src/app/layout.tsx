@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: "%s · Ngaris Managed",
   },
   description:
-    "Construction and property management software for Zimbabwe builds — verified progress, financial controls, and diaspora-ready tracking.",
+    "Ngaris Managed helps diaspora and local clients identify verified service providers in Zimbabwe, select the right team together, and manage construction and property projects from anywhere.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   ),

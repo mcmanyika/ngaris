@@ -31,7 +31,7 @@ export function Hero() {
       <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-8 px-4 pt-28 pb-12 sm:px-6 sm:pt-32 sm:pb-16 lg:grid-cols-[0.95fr_1.05fr] lg:gap-6 lg:px-8 lg:pb-16">
         <div className="max-w-xl">
           <p className="animate-fade-up text-[11px] font-semibold tracking-[0.2em] text-white/75 uppercase">
-            Construction &amp; Property Management
+            Verified Providers · Managed Projects
           </p>
           <div
             className="animate-fade-up animation-delay-100 mt-3 h-px w-14"
@@ -43,7 +43,11 @@ export function Hero() {
             <br />
             <span style={{ color: HERO_GOLD }}>Manage from Anywhere.</span>
           </h1>
-          <div className="animate-fade-up animation-delay-200 mt-8 flex flex-wrap gap-3">
+          <p className="animate-fade-up animation-delay-200 mt-4 max-w-md text-sm leading-relaxed text-white/70 sm:text-[15px]">
+            We help diaspora and local clients find verified service providers,
+            choose the right team together, and manage the project end to end.
+          </p>
+          <div className="animate-fade-up animation-delay-300 mt-8 flex flex-wrap gap-3">
             <ConsultationModal
               trigger={
                 <button
@@ -74,7 +78,7 @@ export function Hero() {
         <div className="animate-fade-up animation-delay-200 relative mx-auto w-full max-w-[560px] lg:max-w-none">
           <Image
             src="/brand/laptop.png"
-            alt="Ngaris Managed project dashboard on laptop"
+            alt="Ngaris Managed platform — providers, selection, and project oversight"
             width={1536}
             height={1024}
             priority

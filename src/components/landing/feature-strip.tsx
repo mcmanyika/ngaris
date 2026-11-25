@@ -1,19 +1,19 @@
 "use client";
 
 import {
-  ClipboardCheck,
-  FolderKanban,
+  Handshake,
   ShieldCheck,
-  Wallet,
+  FolderKanban,
+  Eye,
 } from "lucide-react";
 
 import { Reveal } from "@/components/landing/reveal";
 
 const items = [
-  { icon: FolderKanban, label: "Projects", meta: "Live status" },
-  { icon: ClipboardCheck, label: "Site Reports", meta: "Weekly digests" },
-  { icon: ShieldCheck, label: "Approvals", meta: "One-tap sign-off" },
-  { icon: Wallet, label: "Finance", meta: "Budget clarity" },
+  { icon: ShieldCheck, label: "Verify", meta: "Vetted providers" },
+  { icon: Handshake, label: "Select", meta: "Choose together" },
+  { icon: FolderKanban, label: "Manage", meta: "We run the work" },
+  { icon: Eye, label: "Oversee", meta: "Live from abroad" },
 ];
 
 export function FeatureStrip() {

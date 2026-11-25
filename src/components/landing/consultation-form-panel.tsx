@@ -20,7 +20,7 @@ const projectTypeLabels: Record<(typeof leadProjectTypes)[number], string> = {
   residential_build: "Residential build",
   renovation: "Renovation",
   commercial: "Commercial",
-  project_oversight: "Project oversight only",
+  project_oversight: "Find providers & manage",
   other: "Other",
 };
 
@@ -198,7 +198,7 @@ export function ConsultationFormPanel() {
         <Textarea
           id="message"
           rows={4}
-          placeholder="Timeline, plot status, finish level…"
+          placeholder="Scope, location, provider needs, timeline…"
           className={fieldControlClass}
           {...register("message")}
         />
