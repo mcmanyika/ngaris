@@ -18,6 +18,9 @@ export function SiteFooter() {
           </span>
         </Link>
         <div className="flex items-center gap-4 text-sm text-[#032842]/55">
+          <Link href="/about" className="transition-colors hover:text-[#032842]">
+            About
+          </Link>
           <ConsultationModal
             trigger={
               <button

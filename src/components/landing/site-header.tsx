@@ -2,6 +2,7 @@
 
 import { Home, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { ConsultationModal } from "@/components/landing/consultation-modal";
@@ -11,14 +12,17 @@ const HERO_NAVY = "#022848";
 const HERO_GOLD = "#EDB254";
 
 const navItems = [
-  { href: "#home", label: "Home" },
-  { href: "#features", label: "How it works" },
-  { href: "#diaspora", label: "Diaspora" },
+  { href: "/", label: "Home" },
+  { href: "/#features", label: "How it works" },
+  { href: "/#diaspora", label: "Diaspora" },
+  { href: "/about", label: "About" },
 ];
 
 export function SiteHeader() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const solid = pathname !== "/" || scrolled || open;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -38,13 +42,12 @@ export function SiteHeader() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-300",
-        scrolled || open
+        solid
           ? "border-b border-white/10 backdrop-blur-md"
           : "border-b border-transparent",
       )}
       style={{
-        backgroundColor:
-          scrolled || open ? "rgba(2, 40, 72, 0.82)" : "transparent",
+        backgroundColor: solid ? "rgba(2, 40, 72, 0.82)" : "transparent",
       }}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
@@ -64,15 +67,26 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className="text-sm text-white/75 transition-colors hover:text-white"
-            >
-              {item.label}
-            </a>
-          ))}
+          {navItems.map((item) => {
+            const active =
+              item.href === "/about"
+                ? pathname === "/about"
+                : item.href === "/"
+                  ? pathname === "/"
+                  : false;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "text-sm transition-colors hover:text-white",
+                  active ? "text-white" : "text-white/75",
+                )}
+              >
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
@@ -115,14 +129,14 @@ export function SiteHeader() {
       >
         <nav className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-4">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
               className="rounded-md px-3 py-2.5 text-sm text-white/85"
               onClick={() => setOpen(false)}
             >
               {item.label}
-            </a>
+            </Link>
           ))}
           <button
             type="button"
