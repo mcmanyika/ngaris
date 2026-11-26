@@ -14,7 +14,7 @@ const items = [
 
 export function FeatureStrip() {
   return (
-    <section className="relative z-10 -mt-px border-y border-[#032842]/[0.06] bg-white/90 backdrop-blur-sm">
+    <section className="relative z-10 -mt-px border-y border-white/10 bg-[#021a2e]">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 sm:grid-cols-4">
           {items.map((item, index) => (
@@ -25,17 +25,17 @@ export function FeatureStrip() {
               {index > 0 ? (
                 <span
                   aria-hidden
-                  className="absolute top-1/2 left-0 hidden h-8 w-px -translate-y-1/2 bg-[#032842]/10 sm:block"
+                  className="absolute top-1/2 left-0 hidden h-8 w-px -translate-y-1/2 bg-white/12 sm:block"
                 />
               ) : null}
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#032842]/[0.04] text-[#032842]/70 transition-colors duration-300 group-hover:bg-[#EDB254]/15 group-hover:text-[#032842]">
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/8 text-[#EDB254] transition-colors duration-300 group-hover:bg-[#EDB254]/20 group-hover:text-[#EDB254]">
                 <item.icon className="h-4 w-4" strokeWidth={1.75} />
               </span>
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold tracking-tight text-[#032842]">
+                <p className="truncate text-sm font-semibold tracking-tight text-white">
                   {item.label}
                 </p>
-                <p className="truncate text-[11px] text-[#032842]/45">
+                <p className="truncate text-[11px] text-white/50">
                   {item.meta}
                 </p>
               </div>
