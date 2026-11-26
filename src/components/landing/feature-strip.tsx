@@ -25,7 +25,7 @@ export function FeatureStrip() {
             {items.map((item, index) => (
               <div
                 key={item.label}
-                className="group relative flex items-center gap-3 px-3 py-5 sm:justify-center sm:px-4 sm:py-6"
+                className="group relative flex items-center gap-3 px-3 py-4 sm:justify-center sm:px-4 sm:py-5"
               >
                 {index > 0 ? (
                   <span
