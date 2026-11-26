@@ -94,14 +94,25 @@ export async function POST(request: Request) {
 
     const missingKey =
       error instanceof Error && error.message.includes("OPENAI_API_KEY");
+    const invalidKey =
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      (error as { code?: string }).code === "invalid_api_key";
+
+    if (missingKey || invalidKey) {
+      return NextResponse.json(
+        {
+          error:
+            "Chat could not authenticate with OpenAI. Check NGARIS_OPENAI_API_KEY or OPENAI_API_KEY in .env.local (Cursor may inject a different OPENAI_API_KEY into the terminal).",
+        },
+        { status: 503 },
+      );
+    }
 
     return NextResponse.json(
-      {
-        error: missingKey
-          ? "Chat is temporarily unavailable."
-          : "Unable to reply right now. Please try again.",
-      },
-      { status: missingKey ? 503 : 502 },
+      { error: "Unable to reply right now. Please try again." },
+      { status: 502 },
     );
   }
 }
