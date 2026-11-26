@@ -14,7 +14,7 @@ export function SiteFooter() {
             <Home className="h-3.5 w-3.5" />
           </span>
           <span className="text-sm font-semibold">
-            Ngaris <span className="text-[#EDB254]">Managed</span>
+            Ngaris <span className="text-[#EDB254]">Construction</span>
           </span>
         </Link>
         <div className="flex items-center gap-4 text-sm text-[#032842]/55">

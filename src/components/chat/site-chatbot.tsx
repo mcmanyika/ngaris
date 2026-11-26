@@ -17,7 +17,7 @@ const STARTER: ChatMessage = {
   id: "welcome",
   role: "assistant",
   content:
-    "Hi — I’m the Ngaris Managed assistant. Ask about verified providers, selecting a team with us, or how we manage projects from abroad.",
+    "Hi — I’m the Ngaris Construction assistant. Ask about verified providers, selecting a team with us, or how we manage projects from abroad.",
 };
 
 const SUGGESTIONS = [

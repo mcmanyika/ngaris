@@ -30,7 +30,7 @@ export function Hero() {
           />
         </div>
 
-        <div className="relative z-10 mx-auto grid w-full max-w-6xl flex-1 items-center gap-6 px-4 pt-24 pb-8 sm:gap-8 sm:px-6 sm:pt-28 sm:pb-10 lg:grid-cols-[0.95fr_1.05fr] lg:gap-6 lg:px-8 lg:pb-12">
+        <div className="relative z-10 mx-auto grid w-full max-w-6xl flex-1 items-center gap-6 px-4 pt-24 pb-8 sm:gap-8 sm:px-6 sm:pt-28 sm:pb-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-3 lg:px-8 lg:pb-12">
           <div className="max-w-xl">
             <p className="animate-fade-up text-[11px] font-semibold tracking-[0.2em] text-white/75 uppercase">
               Verified Providers · Managed Projects
@@ -77,15 +77,15 @@ export function Hero() {
             </div>
           </div>
 
-          <div className="animate-fade-up animation-delay-200 relative mx-auto w-full max-w-[560px] lg:max-w-none">
+          <div className="animate-fade-up animation-delay-200 relative mx-auto w-full max-w-[680px] lg:mx-0 lg:ml-auto lg:max-w-none lg:translate-x-6 lg:origin-right lg:scale-[1.12] xl:translate-x-10">
             <Image
               src="/brand/laptop.png"
-              alt="Ngaris Managed platform — providers, selection, and project oversight"
+              alt="Ngaris Construction platform — providers, selection, and project oversight"
               width={1536}
               height={1024}
               priority
               className="h-auto w-full drop-shadow-[0_30px_60px_rgba(0,0,0,0.45)]"
-              sizes="(max-width: 1024px) 90vw, 560px"
+              sizes="(max-width: 1024px) 94vw, 720px"
             />
           </div>
         </div>

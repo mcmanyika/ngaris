@@ -22,7 +22,7 @@ export function AboutIntro() {
             Built to make Zimbabwe projects accountable from anywhere.
           </h1>
           <p className="mt-5 text-sm leading-relaxed text-white/70 sm:text-base">
-            Ngaris Managed is a platform for diaspora and local clients who need
+            Ngaris Construction is a platform for diaspora and local clients who need
             verified service providers, joint selection, and professional project
             management — without guessing from abroad.
           </p>

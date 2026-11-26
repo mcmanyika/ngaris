@@ -9,7 +9,7 @@ import { SiteHeader } from "@/components/landing/site-header";
 export const metadata: Metadata = {
   title: "About us",
   description:
-    "Meet the Ngaris Managed leadership — verifying providers, selecting with clients, and managing Zimbabwe projects for diaspora and local owners.",
+    "Meet the Ngaris Construction leadership — verifying providers, selecting with clients, and managing Zimbabwe projects for diaspora and local owners.",
 };
 
 export default function AboutPage() {

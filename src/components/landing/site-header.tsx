@@ -62,7 +62,7 @@ export function SiteHeader() {
             <Home className="h-4 w-4" />
           </span>
           <span className="text-sm font-semibold tracking-tight sm:text-base">
-            Ngaris <span style={{ color: HERO_GOLD }}>Managed</span>
+            Ngaris <span style={{ color: HERO_GOLD }}>Construction</span>
           </span>
         </Link>
 

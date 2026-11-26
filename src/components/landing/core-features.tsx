@@ -164,7 +164,7 @@ export function CoreFeatures() {
             Find the right team. We manage the rest.
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-[#032842]/55 sm:text-[15px]">
-            Ngaris Managed connects clients — especially the diaspora — with
+            Ngaris Construction connects clients — especially the diaspora — with
             verified service providers, helps you select together, and runs the
             project with clear oversight from anywhere.
           </p>

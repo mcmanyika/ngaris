@@ -33,7 +33,7 @@ export async function notifyAdminsOfLead(input: {
     body: JSON.stringify({
       from,
       to: [to],
-      subject: `New Ngaris Managed enquiry — ${input.fullName}`,
+      subject: `New Ngaris Construction enquiry — ${input.fullName}`,
       text: [
         "A new consultation enquiry was submitted.",
         "",
