@@ -14,7 +14,7 @@ const items = [
 
 export function FeatureStrip() {
   return (
-    <section className="relative z-10 -mt-px border-y border-white/10 bg-[#021a2e]">
+    <section className="relative z-10 -mt-px border-y border-white/10 bg-black">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 sm:grid-cols-4">
           {items.map((item, index) => (
