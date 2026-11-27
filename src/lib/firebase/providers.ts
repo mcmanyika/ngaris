@@ -135,25 +135,34 @@ export async function listVerifiedProvidersPublic(options?: {
 }): Promise<PublicProviderSummary[]> {
   await awaitRequestIo();
   const db = getAdminFirestore();
-  const limit = options?.limit ?? 48;
+  const limit = options?.limit ?? 6;
+  // Equality-only query — sort newest-first in memory to avoid a composite index.
   const snap = await db
     .collection("providers")
     .where("verificationStatus", "==", "verified")
-    .limit(limit)
     .get();
 
   return snap.docs
     .map((doc) => {
       const data = doc.data();
+      const createdAt = data.createdAt as Timestamp | null | undefined;
       return {
         id: doc.id,
         companyName: String(data.companyName ?? ""),
         trade: String(data.trade ?? ""),
         city: String(data.city ?? ""),
+        createdAtMs: createdAt?.toMillis?.() ?? 0,
       };
     })
     .filter((item) => item.companyName.length > 0)
-    .sort((a, b) => a.companyName.localeCompare(b.companyName));
+    .sort((a, b) => b.createdAtMs - a.createdAtMs)
+    .slice(0, limit)
+    .map(({ id, companyName, trade, city }) => ({
+      id,
+      companyName,
+      trade,
+      city,
+    }));
 }
 
 export async function updateProviderVerification(input: {

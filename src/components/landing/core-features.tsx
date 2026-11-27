@@ -9,16 +9,12 @@ import {
   Clock3,
   Database,
   FileText,
-  Layers,
-  ShieldCheck,
-  Users,
 } from "lucide-react";
 
 import { Reveal } from "@/components/landing/reveal";
 
 const features = [
   {
-    icon: ShieldCheck,
     title: "Verified Contractors",
     description: "Vetted contractors and trades you can trust.",
     hint: (
@@ -52,7 +48,6 @@ const features = [
     ),
   },
   {
-    icon: Layers,
     title: "Select Together",
     description: "Shortlist options and decide with your team.",
     hint: (
@@ -100,7 +95,6 @@ const features = [
     ),
   },
   {
-    icon: CalendarCheck2,
     title: "Project Management",
     description: "Coordinate the build — schedules, site, and delivery.",
     hint: (
@@ -128,7 +122,6 @@ const features = [
     ),
   },
   {
-    icon: Users,
     title: "Client Oversight",
     description: "Approvals, spend, and site updates — clear for owners abroad.",
     hint: (
@@ -169,14 +162,6 @@ export function CoreFeatures() {
           {features.map((feature, index) => (
             <Reveal key={feature.title} delayMs={index * 80}>
               <article className="feature-card group flex h-full flex-col p-6 sm:p-7">
-                <div className="mb-5 flex items-start justify-between gap-3">
-                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#032842] text-white shadow-[0_10px_24px_rgba(3,40,66,0.18)] transition-transform duration-300 group-hover:-translate-y-0.5">
-                    <feature.icon className="h-5 w-5" strokeWidth={1.75} />
-                  </div>
-                  <span className="pt-1 text-sm font-medium tabular-nums text-[#032842]/25">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
                 <h3 className="text-lg font-bold tracking-tight text-[#032842]">
                   {feature.title}
                 </h3>

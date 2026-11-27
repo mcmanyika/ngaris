@@ -1,4 +1,4 @@
-import { Building2, CheckCircle2 } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { Suspense } from "react";
 
 import { ConsultationIntroButton } from "@/components/landing/consultation-intro-button";
@@ -15,7 +15,7 @@ function tradeLabel(trade: string) {
 }
 
 async function ContractorsGrid() {
-  const providers = await listVerifiedProvidersPublic({ limit: 48 });
+  const providers = await listVerifiedProvidersPublic({ limit: 6 });
 
   if (providers.length === 0) {
     return (
@@ -32,21 +32,16 @@ async function ContractorsGrid() {
       {providers.map((provider) => (
         <li key={provider.id}>
           <div className="flex h-full flex-col rounded-2xl border border-[#032842]/8 bg-white p-5 shadow-[0_12px_32px_rgba(3,40,66,0.04)]">
-            <div className="flex items-start gap-3">
-              <span className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#F3F6F9] text-[#032842]">
-                <Building2 className="h-4 w-4" strokeWidth={1.75} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <p className="truncate font-semibold text-[#032842]">
-                  {provider.companyName}
-                </p>
-                <p className="mt-0.5 truncate text-sm text-[#032842]/50">
-                  {tradeLabel(provider.trade)} · {provider.city}
-                </p>
-              </div>
+            <div className="min-w-0">
+              <p className="truncate font-semibold text-[#032842]">
+                {provider.companyName}
+              </p>
+              <p className="mt-0.5 truncate text-sm text-[#032842]/50">
+                {tradeLabel(provider.trade)} · {provider.city}
+              </p>
             </div>
             <div className="mt-4 flex items-center justify-between gap-3">
-              <span className="inline-flex items-center gap-1 text-xs font-semibold text-[#3B82F6]">
+              <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600">
                 <CheckCircle2 className="h-3.5 w-3.5" />
                 Verified
               </span>
