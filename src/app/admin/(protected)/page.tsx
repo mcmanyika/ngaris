@@ -1,6 +1,9 @@
-import Link from "next/link";
 import { Suspense } from "react";
 
+import {
+  DashboardContractorsSection,
+  DashboardProjectsSection,
+} from "@/components/admin/dashboard-lists";
 import {
   SpeedometerGauges,
   type SpeedometerMetric,
@@ -9,15 +12,6 @@ import { listLeads } from "@/lib/firebase/leads";
 import { listProjects } from "@/lib/firebase/projects";
 import { listProviders } from "@/lib/firebase/providers";
 import { getVerifiedSession } from "@/lib/firebase/session";
-import {
-  providerTradeLabels,
-  providerVerificationLabels,
-  type providerTrades,
-} from "@/lib/validations/provider";
-import {
-  projectStatusLabels,
-  type ProjectStatus,
-} from "@/lib/validations/project";
 
 export const instant = false;
 
@@ -101,6 +95,23 @@ async function DashboardStats() {
     },
   ];
 
+  const projectItems = projects.map((project) => ({
+    id: project.id,
+    title: project.title,
+    clientName: project.clientName,
+    location: project.location,
+    status: project.status,
+    contractorName: project.contractorName,
+  }));
+
+  const contractorItems = providers.map((provider) => ({
+    id: provider.id,
+    companyName: provider.companyName,
+    city: provider.city,
+    trade: provider.trade,
+    verificationStatus: provider.verificationStatus,
+  }));
+
   return (
     <>
       <h1 className="text-3xl font-bold tracking-tight">
@@ -109,89 +120,19 @@ async function DashboardStats() {
 
       <SpeedometerGauges metrics={metrics} />
 
-      {projects.length > 0 ? (
-        <section className="space-y-3">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-lg font-semibold">Projects</h2>
-            <Link
-              href="/admin/projects"
-              className="text-sm font-medium text-[#032842]/55 hover:text-[#032842]"
-            >
-              View all
-            </Link>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-[#032842]/8 bg-white">
-            <ul className="divide-y divide-[#032842]/6">
-              {projects.slice(0, 5).map((project) => (
-                <li key={project.id}>
-                  <Link
-                    href={`/admin/projects?id=${encodeURIComponent(project.id)}`}
-                    className="flex items-center justify-between gap-4 px-4 py-3 hover:bg-[#032842]/[0.03]"
-                  >
-                    <div className="min-w-0">
-                      <p className="truncate font-medium text-[#032842]">
-                        {project.title}
-                      </p>
-                      <p className="truncate text-xs text-[#032842]/45">
-                        {project.clientName} · {project.location}
-                      </p>
-                    </div>
-                    <span className="shrink-0 rounded-md bg-[#032842]/6 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-[#032842] uppercase">
-                      {projectStatusLabels[project.status as ProjectStatus] ??
-                        project.status}
-                    </span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
-      ) : null}
-
-      {providers.length > 0 ? (
-        <section className="space-y-3">
-          <div className="flex items-center justify-between gap-3">
-            <h2 className="text-lg font-semibold">Contractors</h2>
-            <Link
-              href="/admin/providers"
-              className="text-sm font-medium text-[#032842]/55 hover:text-[#032842]"
-            >
-              View all
-            </Link>
-          </div>
-          <div className="overflow-hidden rounded-2xl border border-[#032842]/8 bg-white">
-            <ul className="divide-y divide-[#032842]/6">
-              {providers.slice(0, 5).map((provider) => {
-                const trade =
-                  providerTradeLabels[
-                    provider.trade as (typeof providerTrades)[number]
-                  ] ?? provider.trade;
-                return (
-                  <li key={provider.id}>
-                    <Link
-                      href={`/admin/providers?id=${encodeURIComponent(provider.id)}`}
-                      className="flex items-center justify-between gap-4 px-4 py-3 hover:bg-[#032842]/[0.03]"
-                    >
-                      <div className="min-w-0">
-                        <p className="truncate font-medium text-[#032842]">
-                          {provider.companyName}
-                        </p>
-                        <p className="truncate text-xs text-[#032842]/45">
-                          {trade} · {provider.city}
-                        </p>
-                      </div>
-                      <span className="shrink-0 rounded-md bg-[#032842]/6 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-[#032842] uppercase">
-                        {providerVerificationLabels[
-                          provider.verificationStatus
-                        ] ?? provider.verificationStatus}
-                      </span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </section>
+      {projectItems.length > 0 || contractorItems.length > 0 ? (
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+          {projectItems.length > 0 ? (
+            <div className="lg:col-span-6">
+              <DashboardProjectsSection items={projectItems} />
+            </div>
+          ) : null}
+          {contractorItems.length > 0 ? (
+            <div className="lg:col-span-6">
+              <DashboardContractorsSection items={contractorItems} />
+            </div>
+          ) : null}
+        </div>
       ) : null}
     </>
   );

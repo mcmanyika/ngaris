@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { getAdminAuth } from "@/lib/firebase/admin";
-import { ensureUserProfile } from "@/lib/firebase/profiles";
+import {
+  ensureUserProfile,
+  isAllowlistedEmail,
+  isStaffProfile,
+} from "@/lib/firebase/profiles";
 import {
   SESSION_COOKIE_NAME,
   SESSION_MAX_AGE_MS,
@@ -44,24 +48,28 @@ export async function POST(request: Request) {
   try {
     const auth = getAdminAuth();
     const decoded = await auth.verifyIdToken(parsed.data.idToken, false);
+    const email = decoded.email ?? null;
+    const allowlisted = isAllowlistedEmail(email);
 
-    await ensureUserProfile({
+    const profile = await ensureUserProfile({
       uid: decoded.uid,
-      email: decoded.email ?? null,
+      email,
       fullName: parsed.data.fullName,
-      roles: ["staff"],
-      status: "active",
+      roles: allowlisted ? ["admin", "staff"] : ["staff"],
+      status: allowlisted ? "active" : "pending",
     });
 
-    const { sessionCookie, email } = await createSessionCookie(
-      parsed.data.idToken,
-    );
+    const { sessionCookie } = await createSessionCookie(parsed.data.idToken);
+    const canAccess = isStaffProfile(profile);
 
     const response = NextResponse.json({
       ok: true,
-      pendingAccess: false,
+      pendingAccess: !canAccess,
       email,
-      destination: "/admin",
+      destination: canAccess ? "/admin" : "/admin/pending",
+      message: canAccess
+        ? undefined
+        : "Account created. An admin must activate access before you can use the dashboard.",
     });
     response.cookies.set({
       name: SESSION_COOKIE_NAME,

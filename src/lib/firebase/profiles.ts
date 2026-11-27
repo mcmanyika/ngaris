@@ -4,9 +4,16 @@ import { FieldValue, type Timestamp } from "firebase-admin/firestore";
 
 import { getAdminFirestore } from "@/lib/firebase/admin";
 import { awaitRequestIo } from "@/lib/firebase/request-io";
+import type {
+  ProfileRole,
+  ProfileStatus,
+} from "@/lib/validations/user-access";
 
-export type ProfileStatus = "pending" | "active" | "disabled";
-export type ProfileRole = "staff" | "admin" | "contractor";
+export type { ProfileRole, ProfileStatus };
+export {
+  profileRoleLabels,
+  profileStatusLabels,
+} from "@/lib/validations/user-access";
 
 export type UserProfile = {
   uid: string;
@@ -18,6 +25,18 @@ export type UserProfile = {
   createdAt: Timestamp | null;
   updatedAt: Timestamp | null;
 };
+
+export function parseAllowlist() {
+  return (process.env.ADMIN_EMAIL_ALLOWLIST ?? "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+export function isAllowlistedEmail(email: string | null | undefined) {
+  if (!email) return false;
+  return parseAllowlist().includes(email.trim().toLowerCase());
+}
 
 function mapProfile(
   uid: string,
@@ -49,6 +68,21 @@ export async function getUserProfile(uid: string) {
   const doc = await db.collection("profiles").doc(uid).get();
   if (!doc.exists) return null;
   return mapProfile(uid, doc.data()!);
+}
+
+export async function listProfiles(options?: { limit?: number }) {
+  await awaitRequestIo();
+  const db = getAdminFirestore();
+  const limit = options?.limit ?? 200;
+  const snap = await db.collection("profiles").limit(limit).get();
+
+  return snap.docs
+    .map((doc) => mapProfile(doc.id, doc.data()))
+    .sort((a, b) => {
+      const aMs = a.createdAt?.toMillis?.() ?? 0;
+      const bMs = b.createdAt?.toMillis?.() ?? 0;
+      return bMs - aMs;
+    });
 }
 
 export async function ensureUserProfile(input: {
@@ -89,8 +123,11 @@ export async function ensureUserProfile(input: {
     });
   }
 
-  const roles = input.roles ?? ["staff"];
-  const status = input.status ?? "active";
+  const allowlisted = isAllowlistedEmail(input.email);
+  const roles =
+    input.roles ??
+    (allowlisted ? (["admin", "staff"] as ProfileRole[]) : ["staff"]);
+  const status = input.status ?? (allowlisted ? "active" : "pending");
 
   const profile = {
     email: input.email,
@@ -106,10 +143,7 @@ export async function ensureUserProfile(input: {
   return mapProfile(input.uid, profile);
 }
 
-export async function setProfileStatus(
-  uid: string,
-  status: ProfileStatus,
-) {
+export async function setProfileStatus(uid: string, status: ProfileStatus) {
   const db = getAdminFirestore();
   await db.collection("profiles").doc(uid).set(
     {
@@ -120,19 +154,42 @@ export async function setProfileStatus(
   );
 }
 
+export async function updateUserAccess(input: {
+  uid: string;
+  status: ProfileStatus;
+  roles: ProfileRole[];
+}) {
+  const db = getAdminFirestore();
+  await db.collection("profiles").doc(input.uid).set(
+    {
+      status: input.status,
+      roles: input.roles,
+      updatedAt: FieldValue.serverTimestamp(),
+    },
+    { merge: true },
+  );
+}
+
+/** Active staff or admin only — pending/disabled cannot access admin dashboard. */
 export function isStaffProfile(profile: UserProfile | null | undefined) {
   if (!profile) return false;
-  if (profile.status === "disabled") return false;
-  if (profile.roles.includes("staff") || profile.roles.includes("admin")) {
-    return true;
-  }
-  // Back-compat: early open registrations had empty roles.
-  if (profile.roles.includes("contractor")) return false;
-  return profile.roles.length === 0 && profile.status === "active";
+  if (profile.status !== "active") return false;
+  return profile.roles.includes("staff") || profile.roles.includes("admin");
+}
+
+export function isAdminProfile(profile: UserProfile | null | undefined) {
+  if (!profile) return false;
+  if (profile.status !== "active") return false;
+  return profile.roles.includes("admin");
 }
 
 export function isContractorProfile(profile: UserProfile | null | undefined) {
   if (!profile) return false;
   if (profile.status === "disabled") return false;
   return profile.roles.includes("contractor");
+}
+
+export function isPendingAccess(profile: UserProfile | null | undefined) {
+  if (!profile) return true;
+  return profile.status === "pending";
 }

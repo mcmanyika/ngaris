@@ -41,17 +41,20 @@ export function AdminLoginForm() {
         destination?: string;
         isStaff?: boolean;
         isContractor?: boolean;
+        pendingAccess?: boolean;
       } | null;
 
       if (!response.ok) {
         throw new Error(payload?.error ?? "Sign-in failed.");
       }
 
-      if (payload?.isContractor && !payload?.isStaff) {
+      if (payload?.pendingAccess) {
+        router.replace("/admin/pending");
+      } else if (payload?.isContractor && !payload?.isStaff) {
         router.replace("/contractor");
       } else {
         router.replace(
-          nextPath.startsWith("/admin")
+          nextPath.startsWith("/admin") && !nextPath.includes("pending")
             ? nextPath
             : (payload?.destination ?? "/admin"),
         );

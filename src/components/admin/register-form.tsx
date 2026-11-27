@@ -71,7 +71,8 @@ export function AdminRegisterForm() {
       }
 
       if (payload?.pendingAccess) {
-        setInfo(payload.message ?? "Account created. Awaiting access.");
+        router.replace("/admin/pending");
+        router.refresh();
         return;
       }
 

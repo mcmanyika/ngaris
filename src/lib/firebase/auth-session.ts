@@ -16,7 +16,9 @@ export async function updateSession(request: NextRequest) {
     pathname === "/admin/login" ||
     pathname.startsWith("/admin/login/") ||
     pathname === "/admin/register" ||
-    pathname.startsWith("/admin/register/");
+    pathname.startsWith("/admin/register/") ||
+    pathname === "/admin/pending" ||
+    pathname.startsWith("/admin/pending/");
 
   const isContractorRoute = pathname.startsWith("/contractor");
   const isContractorPublic =

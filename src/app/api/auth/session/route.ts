@@ -4,6 +4,7 @@ import { z } from "zod";
 import {
   getUserProfile,
   isContractorProfile,
+  isPendingAccess,
   isStaffProfile,
 } from "@/lib/firebase/profiles";
 import {
@@ -46,13 +47,25 @@ export async function POST(request: Request) {
     );
 
     const profile = await getUserProfile(uid);
+
+    if (profile?.status === "disabled") {
+      return NextResponse.json(
+        { error: "This account has been disabled. Contact an admin." },
+        { status: 403 },
+      );
+    }
+
     const isStaff = isStaffProfile(profile);
     const isContractor = isContractorProfile(profile);
-    const destination = isStaff
-      ? "/admin"
-      : isContractor
-        ? "/contractor"
-        : "/";
+    const pendingAccess = isPendingAccess(profile) && !isContractor;
+
+    const destination = pendingAccess
+      ? "/admin/pending"
+      : isStaff
+        ? "/admin"
+        : isContractor
+          ? "/contractor"
+          : "/admin/pending";
 
     const response = NextResponse.json({
       ok: true,
@@ -60,6 +73,8 @@ export async function POST(request: Request) {
       destination,
       isStaff,
       isContractor,
+      pendingAccess,
+      status: profile?.status ?? "pending",
     });
     response.cookies.set({
       name: SESSION_COOKIE_NAME,

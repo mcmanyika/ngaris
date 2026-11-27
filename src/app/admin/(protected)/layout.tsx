@@ -15,13 +15,21 @@ export default async function AdminProtectedLayout({
     redirect("/api/auth/logout?next=/admin/login");
   }
 
+  if (session.profile?.status === "disabled") {
+    redirect("/api/auth/logout?next=/admin/login");
+  }
+
   if (session.isContractor && !session.isStaff) {
     redirect("/contractor");
   }
 
-  if (!session.isStaff) {
-    redirect("/api/auth/logout?next=/admin/login");
+  if (session.isPending || !session.isStaff) {
+    redirect("/admin/pending");
   }
 
-  return <AdminShell email={session.user.email}>{children}</AdminShell>;
+  return (
+    <AdminShell email={session.user.email} isAdmin={session.isAdmin}>
+      {children}
+    </AdminShell>
+  );
 }
