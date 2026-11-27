@@ -7,8 +7,11 @@ import { Reveal } from "@/components/landing/reveal";
 
 export function DiasporaCta() {
   return (
-    <section id="diaspora" className="scroll-mt-20 bg-[#F7F9FB] pb-16 sm:pb-20">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+    <section
+      id="diaspora"
+      className="scroll-mt-20 flex items-center justify-center bg-[#F7F9FB] py-16 sm:py-20"
+    >
+      <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
         <Reveal>
           <div className="overflow-hidden rounded-2xl bg-[#032842] text-white shadow-[0_24px_60px_rgba(10,31,51,0.25)] lg:grid lg:grid-cols-[0.9fr_1.1fr]">
             <div className="relative min-h-[220px] lg:min-h-full">
@@ -22,7 +25,7 @@ export function DiasporaCta() {
               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-[#032842]/40 lg:bg-gradient-to-r lg:from-transparent lg:to-[#032842]/55" />
             </div>
 
-            <div className="flex flex-col justify-center gap-6 p-8 sm:p-10 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:p-12">
+            <div className="flex flex-col items-center justify-center gap-6 p-8 text-center sm:p-10 lg:flex-row lg:gap-8 lg:p-12 lg:text-left">
               <div className="max-w-md">
                 <p className="text-[11px] font-semibold tracking-[0.18em] text-[#EDB254] uppercase">
                   For the Diaspora

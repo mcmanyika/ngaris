@@ -94,6 +94,31 @@
   }
 }
 
+/* Outside @layer so this beats Tailwind preflight `cursor: default` on buttons. */
+a[href],
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]):not([data-disabled]),
+summary,
+input[type="button"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="reset"]:not(:disabled),
+input[type="image"]:not(:disabled),
+label[for],
+select:not(:disabled),
+[data-slot="button"]:not(:disabled):not([data-disabled]) {
+  cursor: pointer;
+}
+
+button:disabled,
+[role="button"][aria-disabled="true"],
+[role="button"][data-disabled],
+[data-slot="button"]:disabled,
+[data-slot="button"][data-disabled],
+input:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
