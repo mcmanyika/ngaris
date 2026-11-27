@@ -19,7 +19,7 @@ import { Reveal } from "@/components/landing/reveal";
 const features = [
   {
     icon: ShieldCheck,
-    title: "Verified Providers",
+    title: "Verified Contractors",
     description: "Vetted contractors and trades you can trust.",
     hint: (
       <div className="mt-auto space-y-3 pt-7">
@@ -163,11 +163,6 @@ export function CoreFeatures() {
           <h2 className="mt-3 text-[clamp(1.15rem,4.2vw,2.15rem)] font-bold tracking-tight text-[#032842] whitespace-nowrap">
             Find the right team. We manage the rest.
           </h2>
-          <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-[#032842]/55 sm:text-[15px]">
-            Ngaris Construction connects clients — especially the diaspora — with
-            verified service providers, helps you select together, and runs the
-            project with clear oversight from anywhere.
-          </p>
         </Reveal>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">

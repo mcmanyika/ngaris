@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 
-import { SiteChatbot } from "@/components/chat/site-chatbot";
+import { ConditionalChatbot } from "@/components/chat/conditional-chatbot";
 
 import "./globals.css";
 
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     template: "%s · Ngaris Construction",
   },
   description:
-    "Ngaris Construction helps diaspora and local clients identify verified service providers in Zimbabwe, select the right team together, and manage construction and property projects from anywhere.",
+    "Ngaris Construction helps diaspora and local clients identify verified contractors in Zimbabwe, select the right team together, and manage construction and property projects from anywhere.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   ),
@@ -27,7 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${plusJakarta.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-white font-sans text-[#032842]">
         {children}
-        <SiteChatbot />
+        <ConditionalChatbot />
       </body>
     </html>
   );

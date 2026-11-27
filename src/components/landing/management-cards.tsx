@@ -17,7 +17,7 @@ const management = [
     role: "Executive Chair",
     focus: "Governance",
     summary:
-      "Sets accountability standards across provider verification and client outcomes.",
+      "Sets accountability standards across contractor verification and client outcomes.",
     initials: "EC",
   },
   {
@@ -57,7 +57,7 @@ const management = [
     role: "Client Relations",
     focus: "Diaspora care",
     summary:
-      "Keeps owners abroad informed and involved in provider selection decisions.",
+      "Keeps owners abroad informed and involved in contractor selection decisions.",
     initials: "CR",
   },
 ];
@@ -73,10 +73,6 @@ export function ManagementCards() {
           <h2 className="mt-3 text-3xl font-bold tracking-tight text-[#032842]">
             Management
           </h2>
-          <p className="mt-3 text-sm leading-relaxed text-[#032842]/55 sm:text-[15px]">
-            A lean leadership bench covering verification, joint selection,
-            project delivery, and client oversight.
-          </p>
         </Reveal>
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">

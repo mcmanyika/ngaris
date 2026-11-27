@@ -78,3 +78,30 @@ export function normalizeLeadPayload(
 
 /** @deprecated Use consultationLeadFormSchema */
 export const consultationLeadSchema = consultationLeadFormSchema;
+
+export const leadStatuses = [
+  "new",
+  "contacted",
+  "qualified",
+  "converted",
+  "closed",
+  "spam",
+] as const;
+
+export type LeadStatus = (typeof leadStatuses)[number];
+
+export const leadStatusLabels: Record<LeadStatus, string> = {
+  new: "New",
+  contacted: "Contacted",
+  qualified: "Qualified",
+  converted: "Converted",
+  closed: "Closed",
+  spam: "Spam",
+};
+
+export const leadStatusUpdateSchema = z.object({
+  status: z.enum(leadStatuses),
+  staffNote: z.string().trim().max(4000).optional(),
+});
+
+export type LeadStatusUpdateInput = z.infer<typeof leadStatusUpdateSchema>;

@@ -17,6 +17,11 @@ type RevealProps = {
   as?: "div" | "li" | "article" | "section";
 };
 
+function prefersReducedMotion() {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 export function Reveal({
   children,
   className,
@@ -25,19 +30,13 @@ export function Reveal({
 }: RevealProps) {
   const Tag = as as ElementType;
   const ref = useRef<HTMLElement | null>(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(prefersReducedMotion);
 
   useEffect(() => {
+    if (visible) return;
+
     const node = ref.current;
     if (!node) return;
-
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-    if (prefersReduced) {
-      setVisible(true);
-      return;
-    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -51,7 +50,7 @@ export function Reveal({
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, []);
+  }, [visible]);
 
   return (
     <Tag

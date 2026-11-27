@@ -1,6 +1,6 @@
-# Ngaris Managed — Architecture
+# Ngaris Construction — Architecture
 
-Supabase-first architecture for Ngaris Managed on Next.js 16 (App Router).
+Firebase-first architecture for Ngaris Construction on Next.js 16 (App Router).
 
 ## System overview
 
@@ -9,11 +9,11 @@ Supabase-first architecture for Ngaris Managed on Next.js 16 (App Router).
 │  Vercel — Next.js App Router │
 │  Landing · Dashboards · API  │
 └──────────────┬───────────────┘
-               │ @supabase/ssr + supabase-js
+               │ firebase + firebase-admin
 ┌──────────────▼───────────────┐
-│           Supabase           │
-│  Auth · PostgreSQL · RLS     │
-│  Storage · Realtime · Edge   │
+│           Firebase           │
+│  Auth · Firestore · Rules    │
+│  Storage · (optional CF)     │
 └──────────────┬───────────────┘
                │
      ┌─────────┴──────────┐
@@ -21,96 +21,95 @@ Supabase-first architecture for Ngaris Managed on Next.js 16 (App Router).
      └────────────────────┘
 ```
 
-## Next.js + Supabase clients
+## Next.js + Firebase clients
 
-| Module | Runtime | Key | Purpose |
+| Module | Runtime | Credentials | Purpose |
 | --- | --- | --- | --- |
-| `src/lib/supabase/client.ts` | Browser | Publishable | Client Components, Realtime |
-| `src/lib/supabase/server.ts` | Server | Publishable + cookies | RSC, Server Actions, Route Handlers |
-| `src/lib/supabase/admin.ts` | Server only | Secret | Privileged ops (e.g. lead insert); `server-only` |
-| `src/lib/supabase/proxy.ts` | Proxy | Publishable | Session refresh via `getClaims()` |
+| `src/lib/firebase/client.ts` | Browser | `NEXT_PUBLIC_FIREBASE_*` | Client Components, Auth (Phase 2), Storage |
+| `src/lib/firebase/admin.ts` | Server only | Service account | Privileged ops (e.g. lead insert); `server-only` |
+| `src/lib/firebase/leads.ts` | Server only | Admin | Lead document writes |
+| `src/lib/firebase/auth-session.ts` | Proxy | — | Session cookie / token verification (Phase 2) |
 | `src/proxy.ts` | Next.js 16 Proxy | — | Invokes `updateSession` |
 
-Session refresh uses the Next.js 16 **Proxy** convention (`proxy.ts`), not legacy `middleware.ts`.
+Session handling uses the Next.js 16 **Proxy** convention (`proxy.ts`), not legacy `middleware.ts`. Phase 1 is pass-through until Auth lands.
 
-The secret key (`SUPABASE_SECRET_KEY`) must never appear in client bundles.
+Admin credentials (`FIREBASE_PRIVATE_KEY` / service account JSON) must never appear in client bundles.
 
-## Database
+## Database (Firestore)
 
-- PostgreSQL managed by Supabase
-- Schema changes via `supabase/migrations/*.sql`
-- UUID PKs, FKs, indexes, checks, unique constraints, timestamps
-- Money: `NUMERIC(18,2)` (or higher precision where required)
-- Types: `src/lib/supabase/database.types.ts` (regenerate with `npm run db:types`)
+- Document/collection model with progressive schema growth
+- Server timestamps for `createdAt` / `updatedAt`
+- Money stored as integer cents or decimal strings with strict server validation
+- Collection shapes documented beside access helpers
 
-### Progressive table plan
+### Progressive collection plan
 
-Create in dependency order across phases — not one uncontrolled migration.
+Create in dependency order across phases — not one uncontrolled dump.
 
-1. Identity: `profiles`, `roles`, `permissions`, `user_roles`, `role_permissions`
+1. Identity: `profiles`, role claims
 2. CRM: `leads`, `clients`, `properties`, …
-3. Projects, contractors, site ops, procurement, finance, platform tables as listed in the development plan
+3. Projects, contractors, site ops, procurement, finance, platform collections as listed in the development plan
 
-`profiles.id` references `auth.users.id`. No separate password table.
+`profiles/{uid}` documents align with Firebase Auth UIDs. No separate password table.
 
 ### Phase 1 schema
 
-`public.leads` with RLS enabled and **force** RLS. No policies for `anon` / `authenticated` (default deny). Inserts use the admin client from `POST /api/leads`.
+Collection `leads` — fields: `fullName`, `email`, `phone`, `country`, `projectType`, `location`, `budgetRange`, `message`, `source`, `status`, `metadata`, `createdAt`, `updatedAt`.
+
+Firestore rules **deny all client access** to `leads`. Inserts use the Admin SDK from `POST /api/leads` only. See `firestore.rules`.
 
 ## Authentication (Phase 2+)
 
 - Email/password, verification, reset, optional magic link
 - MFA for privileged users
 - Auto-create profile on authorized user creation
-- Controlled role assignment; role-based dashboard routing
+- Roles via custom claims + Firestore; role-based dashboard routing
 - Public registration must not grant administrative privileges
 
-## Row Level Security
+## Security rules
 
-- Enable RLS on every application table exposed through the API
-- Explicit SELECT / INSERT / UPDATE / DELETE policies; default deny
+- Default deny on all collections
+- Explicit allow rules per role / ownership
 - Clients → own projects and approved customer-facing artifacts only
 - Contractors → assigned work orders / authorized records
 - Supervisors / PMs / finance / inspectors → assigned scope only
 - No self-escalation of roles; no self-approval of unauthorized financial requests
-- `SECURITY DEFINER` helpers: restricted execute grants + fixed `search_path`
+- Privileged mutations via Admin SDK or Cloud Functions when rules alone are insufficient
 
 ## Storage
 
-Private buckets: `project-photos`, `project-videos`, `project-documents`, `client-documents`, `contractor-documents`, `contracts`, `invoices`, `inspection-reports`, `handover-documents`.
+Private paths (examples): `project-photos`, `project-videos`, `project-documents`, `client-documents`, `contractor-documents`, `contracts`, `invoices`, `inspection-reports`, `handover-documents`.
 
-Public: `public-assets` for approved marketing assets only.
+Public: approved marketing assets only.
 
-Paths encode resource IDs; **authorization must validate database permissions**, not path shape alone. Private files via expiring signed URLs.
+Paths encode resource IDs; **authorization must validate permissions**, not path shape alone. Private files via expiring signed URLs from the Admin SDK.
 
 ## Realtime
 
-Enable selectively: project status, milestones, approved progress reports, messages, notifications, approval queues, dashboard activity. Subscriptions must respect RLS. Unsubscribe on unmount. Never broadcast confidential finance on public channels.
+Enable selectively via Firestore listeners: project status, milestones, approved progress reports, messages, notifications, approval queues. Listeners must respect security rules. Unsubscribe on unmount. Never broadcast confidential finance on public channels.
 
 ## Financial transaction architecture
 
-Authorized server functions + transactional PostgreSQL RPCs for budget / PO / milestone / payment / journal / reconciliation / variation flows. Idempotency, concurrency controls, balanced journals, immutability of posted entries (reversals for corrections).
+Authorized server functions (Admin SDK / Cloud Functions) for budget / PO / milestone / payment / journal / reconciliation / variation flows. Idempotency, concurrency controls, balanced journals, immutability of posted entries (reversals for corrections).
 
-## Edge Functions (later)
+## Background jobs (later)
 
-`send-whatsapp-notification`, `whatsapp-webhook`, `send-email-notification`, `generate-weekly-project-report`, `invoice-reminder`, `milestone-notification`, `contractor-document-expiry`, `project-risk-alert`.
-
-Validate authz, verify webhook signatures, retries + delivery logs + idempotency, secrets via Supabase secrets.
+WhatsApp / email notifications, weekly project reports, invoice reminders, milestone notifications, contractor document expiry, project risk alerts — via Next.js scheduled/cron routes and/or Cloud Functions. Validate authz, verify webhook signatures, retries + delivery logs + idempotency.
 
 ## Lead capture (Phase 1)
 
 ```text
 Consultation form → Zod validate → rate limit + honeypot
-  → POST /api/leads → admin client insert into leads
+  → POST /api/leads → Admin SDK insert into Firestore leads
   → notify admins (Resend when configured)
 ```
 
-Public clients cannot SELECT or INSERT leads through the Data API.
+Public clients cannot read or write leads through the client SDK.
 
 ## Environment
 
-See `.env.example`. Required for lead capture: `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`.
+See `.env.example`. Required for lead capture: Firebase Admin credentials (`FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY` or `FIREBASE_SERVICE_ACCOUNT_JSON`). Public `NEXT_PUBLIC_FIREBASE_*` values support the client SDK for Phase 2+.
 
 ## Hosting
 
-Application on Vercel. Supabase Cloud for managed Postgres, Auth, Storage, Realtime, and Edge Functions.
+Application on Vercel. Firebase for Auth, Firestore, Storage, and optional Cloud Functions.

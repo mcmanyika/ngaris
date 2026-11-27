@@ -1,6 +1,7 @@
 "use client";
 
-import { Home, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -51,19 +52,18 @@ export function SiteHeader() {
       }}
     >
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 text-white">
-          <span
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg"
-            style={{
-              backgroundColor: "rgba(237, 178, 84, 0.16)",
-              color: HERO_GOLD,
-            }}
-          >
-            <Home className="h-4 w-4" />
-          </span>
-          <span className="text-sm font-semibold tracking-tight sm:text-base">
-            Ngaris <span style={{ color: HERO_GOLD }}>Construction</span>
-          </span>
+        <Link
+          href="/"
+          className="flex items-center rounded-lg bg-white px-2.5 py-1.5 shadow-sm"
+        >
+          <Image
+            src="/brand/logo.png"
+            alt="Ngaris Construction"
+            width={180}
+            height={48}
+            priority
+            className="h-8 w-auto sm:h-9"
+          />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -90,12 +90,18 @@ export function SiteHeader() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <button
-            type="button"
+          <Link
+            href="/contractor/apply"
             className="inline-flex h-9 items-center rounded-lg border border-white/25 px-3.5 text-sm text-white/90 transition-colors hover:border-white/45 hover:text-white"
           >
-            Client Login
-          </button>
+            For contractors
+          </Link>
+          <Link
+            href="/admin/login"
+            className="inline-flex h-9 items-center rounded-lg border border-white/25 px-3.5 text-sm text-white/90 transition-colors hover:border-white/45 hover:text-white"
+          >
+            Admin Login
+          </Link>
           <ConsultationModal
             trigger={
               <button
@@ -138,12 +144,20 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
-          <button
-            type="button"
+          <Link
+            href="/contractor/apply"
             className="mt-1 rounded-md border border-white/20 px-3 py-2.5 text-sm text-white"
+            onClick={() => setOpen(false)}
           >
-            Client Login
-          </button>
+            For contractors
+          </Link>
+          <Link
+            href="/admin/login"
+            className="rounded-md border border-white/20 px-3 py-2.5 text-sm text-white"
+            onClick={() => setOpen(false)}
+          >
+            Admin Login
+          </Link>
           <div className="mt-1" onClick={() => setOpen(false)}>
             <ConsultationModal
               trigger={

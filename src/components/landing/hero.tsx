@@ -33,7 +33,7 @@ export function Hero() {
         <div className="relative z-10 mx-auto grid w-full max-w-6xl flex-1 items-center gap-6 px-4 pt-24 pb-8 sm:gap-8 sm:px-6 sm:pt-28 sm:pb-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-3 lg:px-8 lg:pb-12">
           <div className="max-w-xl">
             <p className="animate-fade-up text-[11px] font-semibold tracking-[0.2em] text-white/75 uppercase">
-              Verified Providers · Managed Projects
+              Verified Contractors · Managed Projects
             </p>
             <div
               className="animate-fade-up animation-delay-100 mt-3 h-px w-14"
@@ -46,7 +46,7 @@ export function Hero() {
               <span style={{ color: HERO_GOLD }}>Manage from Anywhere.</span>
             </h1>
             <p className="animate-fade-up animation-delay-200 mt-4 max-w-md text-sm leading-relaxed text-white/70 sm:text-[15px]">
-              We help diaspora and local clients find verified service providers,
+              We help diaspora and local clients find verified contractors,
               choose the right team together, and manage the project end to end.
             </p>
             <div className="animate-fade-up animation-delay-300 mt-8 flex flex-wrap gap-3">
@@ -80,7 +80,7 @@ export function Hero() {
           <div className="animate-fade-up animation-delay-200 relative mx-auto w-full max-w-[680px] lg:mx-0 lg:ml-auto lg:max-w-none lg:translate-x-6 lg:origin-right lg:scale-[1.12] xl:translate-x-10">
             <Image
               src="/brand/laptop.png"
-              alt="Ngaris Construction platform — providers, selection, and project oversight"
+              alt="Ngaris Construction platform — contractors, selection, and project oversight"
               width={1536}
               height={1024}
               priority

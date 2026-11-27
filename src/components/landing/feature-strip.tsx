@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 const items = [
-  { icon: ShieldCheck, label: "Verify", meta: "Vetted providers" },
+  { icon: ShieldCheck, label: "Verify", meta: "Vetted contractors" },
   { icon: Handshake, label: "Select", meta: "Choose together" },
   { icon: FolderKanban, label: "Manage", meta: "We run the work" },
   { icon: Eye, label: "Oversee", meta: "Live from abroad" },

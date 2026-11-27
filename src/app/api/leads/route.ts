@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 
+import { createLead } from "@/lib/firebase/leads";
 import { notifyAdminsOfLead } from "@/lib/notifications/lead-notify";
 import { getClientIp, rateLimit } from "@/lib/rate-limit";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { consultationLeadApiSchema } from "@/lib/validations/lead";
 
 export async function POST(request: Request) {
@@ -48,35 +48,22 @@ export async function POST(request: Request) {
   }
 
   try {
-    const supabase = createAdminClient();
-    const { data: lead, error } = await supabase
-      .from("leads")
-      .insert({
-        full_name: data.fullName,
-        email: data.email.toLowerCase(),
-        phone: data.phone ?? null,
-        country: data.country ?? null,
-        project_type: data.projectType ?? null,
-        location: data.location ?? null,
-        budget_range: data.budgetRange ?? null,
-        message: data.message,
-        source: "landing_consultation",
-        status: "new",
-        metadata: {
-          ip,
-          userAgent: request.headers.get("user-agent"),
-        },
-      })
-      .select("id")
-      .single();
-
-    if (error || !lead) {
-      console.error("[api/leads] insert failed", error);
-      return NextResponse.json(
-        { error: "Unable to save your enquiry right now." },
-        { status: 502 },
-      );
-    }
+    const lead = await createLead({
+      fullName: data.fullName,
+      email: data.email.toLowerCase(),
+      phone: data.phone ?? null,
+      country: data.country ?? null,
+      projectType: data.projectType ?? null,
+      location: data.location ?? null,
+      budgetRange: data.budgetRange ?? null,
+      message: data.message,
+      source: "landing_consultation",
+      status: "new",
+      metadata: {
+        ip,
+        userAgent: request.headers.get("user-agent"),
+      },
+    });
 
     await notifyAdminsOfLead({
       leadId: lead.id,
@@ -89,14 +76,19 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, id: lead.id }, { status: 201 });
   } catch (error) {
     console.error("[api/leads] unexpected error", error);
+
+    const misconfigured =
+      error instanceof Error &&
+      (error.message.includes("Firebase Admin") ||
+        error.message.includes("FIREBASE_"));
+
     return NextResponse.json(
       {
-        error:
-          error instanceof Error && error.message.includes("SUPABASE_SECRET_KEY")
-            ? "Lead capture is not configured yet."
-            : "Unable to save your enquiry right now.",
+        error: misconfigured
+          ? "Lead capture is not configured yet."
+          : "Unable to save your enquiry right now.",
       },
-      { status: 503 },
+      { status: misconfigured ? 503 : 502 },
     );
   }
 }

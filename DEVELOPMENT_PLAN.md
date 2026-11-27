@@ -1,10 +1,10 @@
-# Ngaris Managed — Development Plan
+# Ngaris Construction — Development Plan
 
-Master plan for the Ngaris Managed construction management platform. Supabase is the primary backend. Business requirements, landing design, workflows, financial controls, roles, dashboards, and construction management scope from earlier planning are retained.
+Master plan for the Ngaris Construction platform. Firebase is the primary backend. Business requirements, landing design, workflows, financial controls, roles, dashboards, and construction management scope from earlier planning are retained.
 
 ## Product summary
 
-Ngaris Managed delivers accountable construction oversight for Zimbabwe builds — especially diaspora owners who need verified progress, controlled spend, and clear approvals without standing on site every week.
+Ngaris Construction helps diaspora and local clients identify verified service providers in Zimbabwe, select the right team together, and manage construction and property projects from anywhere — with verified progress, controlled spend, and clear approvals.
 
 ## Technology stack
 
@@ -13,39 +13,37 @@ Ngaris Managed delivers accountable construction oversight for Zimbabwe builds �
 | App framework | Next.js App Router + TypeScript |
 | UI | Tailwind CSS, shadcn/ui, Lucide React |
 | Forms / charts | React Hook Form, Zod, Recharts |
-| Database | Supabase PostgreSQL |
-| Auth | Supabase Authentication |
-| Files | Supabase Storage |
-| Live updates | Supabase Realtime |
-| Server jobs | Supabase Edge Functions |
-| Authorization | Supabase Row Level Security |
+| Database | Cloud Firestore |
+| Auth | Firebase Authentication |
+| Files | Cloud Storage for Firebase |
+| Live updates | Firestore listeners |
+| Authorization | Firestore Security Rules + custom claims |
 | Messaging | WhatsApp Business Cloud API |
 | Email | Resend |
 | Hosting | Vercel |
+| AI assistant | OpenAI (server-side chat API) |
 
-**Out of scope for the initial architecture:** Prisma, Auth.js, Firebase, and a separate object storage provider.
+**Out of scope for the initial architecture:** Prisma, Auth.js, Supabase, and a separate object storage provider.
 
-Official packages: `@supabase/supabase-js`, `@supabase/ssr`.
+Official packages: `firebase`, `firebase-admin`.
 
 ## Brand (landing)
 
-- Primary navy: `#15334A`
-- Dark navy: `#0D2536`
-- Gold accent: `#C49A55`
-- Background: `#F8FAFC`
+- Primary navy: `#032842` / `#022848`
+- Gold accent: `#EDB254`
 - Headline: **Build in Zimbabwe. Manage from Anywhere.**
 
-Landing sections: navigation, hero, services, how it works, digital tracking preview, diaspora, why Ngaris, FAQ, consultation form, footer.
+Landing: navigation, hero, how-it-works strip, core features, diaspora CTA, consultation modal, about page, OpenAI assistant, footer.
 
 ## User roles
 
 `SUPER_ADMIN`, `EXECUTIVE_CHAIR`, `MANAGING_DIRECTOR`, `TECHNOLOGY_DIRECTOR`, `PROJECT_MANAGER`, `FINANCE_OFFICER`, `SITE_SUPERVISOR`, `CLIENT_RELATIONS`, `CONTRACTOR`, `INDEPENDENT_INSPECTOR`, `CLIENT`.
 
-Users may hold multiple roles. Users cannot modify their own roles or permissions. Technical administrators do not automatically receive financial approval authority.
+Users may hold multiple roles (Firebase custom claims + Firestore profile docs). Users cannot modify their own roles or permissions. Technical administrators do not automatically receive financial approval authority.
 
 ## Domain modules (retained)
 
-1. **Identity** — profiles linked to `auth.users`, roles, permissions
+1. **Identity** — profiles linked to Firebase Auth UIDs, roles, permissions
 2. **CRM** — leads, clients, properties, consultations, quotations
 3. **Projects** — members, contracts, milestones, tasks, risks, variations, status history
 4. **Contractors** — trades, documents, verifications, subcontracts, work orders, reviews
@@ -56,8 +54,8 @@ Users may hold multiple roles. Users cannot modify their own roles or permission
 
 ## Financial controls (non-negotiable)
 
-- Sensitive money movements run through authorized server-side / transactional RPC paths
-- Approval rules enforced inside database transactions
+- Sensitive money movements run through authorized server-side paths (Admin SDK / Cloud Functions)
+- Approval rules enforced in transactional server logic
 - Idempotency keys and concurrency controls
 - Balanced journal entries; posted transactions immutable (use reversing entries)
 - Payment authorization separate from payment execution
@@ -69,15 +67,15 @@ Users may hold multiple roles. Users cannot modify their own roles or permission
 ### Phase 1 — Foundation & landing (current)
 
 - Initialize Next.js, Tailwind, shadcn/ui
-- Configure Supabase clients (browser, server, admin, proxy)
-- Public landing page
-- Leads migration + secure consultation capture
+- Configure Firebase clients (browser, Admin, session proxy stub)
+- Public landing + about page
+- Firestore `leads` + secure consultation capture
 - Docs and `.env.example`
 
 ### Phase 2 — Auth, RBAC, CRM admin
 
-- Supabase Auth (email/password, verification, reset, optional magic link, MFA for privileged users)
-- Profiles, roles, permissions, RLS
+- Firebase Auth (email/password, verification, reset, optional magic link, MFA for privileged users)
+- Profiles, roles via custom claims + Firestore
 - Admin dashboard shell + CRM / client management
 - Controlled invitations; public registration never grants admin privileges
 
@@ -85,7 +83,7 @@ Users may hold multiple roles. Users cannot modify their own roles or permission
 
 - Project management, milestones, site reports, inspections
 - Contractor management
-- Private storage buckets + signed URLs
+- Private Cloud Storage paths + signed URLs
 
 ### Phase 4 — Procurement & finance
 
@@ -96,21 +94,20 @@ Users may hold multiple roles. Users cannot modify their own roles or permission
 ### Phase 5 — Portals & integrations
 
 - Client portal + contractor portal
-- Realtime (selective), notifications
-- WhatsApp + email edge functions / jobs
+- Selective Firestore listeners, notifications
+- WhatsApp + email jobs (Next.js routes and/or Cloud Functions)
 
 ### Phase 6 — Hardening & production
 
-- Authorization / RLS / finance / responsive / security review
+- Authorization / rules / finance / responsive / security review
 - Production deployment preparation
 
 ## Development rules
 
 - Inspect existing code before changing it; preserve working behavior
-- Strongly typed Supabase queries; regenerate types after schema changes
-- Version-controlled SQL migrations only (no Prisma)
-- Never hardcode credentials; never expose secret keys to the browser
-- Never disable RLS to “fix” access errors
+- Strongly typed Firebase access; document collection shapes in code
+- Never hardcode credentials; never expose Admin credentials to the browser
+- Never loosen Firestore rules to “fix” access errors
 - Fictional seed data only in development
 - Run lint, typecheck, tests, and production builds
 - Ask for approval before starting the next major phase

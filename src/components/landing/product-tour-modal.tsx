@@ -25,9 +25,8 @@ export function ProductTourModal({ trigger }: ProductTourModalProps) {
           <DialogTitle className="text-base font-semibold text-white">
             See how it works
           </DialogTitle>
-          <DialogDescription className="text-white/60">
-            Verified providers, joint selection, and managed delivery — tracked
-            from anywhere.
+          <DialogDescription className="sr-only">
+            Product overview
           </DialogDescription>
         </DialogHeader>
         <div className="p-4">

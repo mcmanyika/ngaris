@@ -1,41 +1,34 @@
-# Ngaris Managed
+# Ngaris Construction
 
-Construction management platform for Zimbabwe builds — verified progress, financial controls, and diaspora-ready tracking.
+Platform for diaspora and local clients building in Zimbabwe — verified service providers, joint selection, and managed project delivery.
 
 > **Headline:** Build in Zimbabwe. Manage from Anywhere.
 
 ## Stack
 
 - **Next.js 16** App Router · TypeScript · Tailwind CSS · shadcn/ui
-- **Supabase** PostgreSQL, Auth, Storage, Realtime, Edge Functions, RLS
+- **Firebase** Auth, Firestore, Security Rules, Cloud Storage
 - **React Hook Form** · Zod · Recharts · Lucide
-- **Resend** · WhatsApp Business Cloud API · **Vercel**
+- **OpenAI** (site assistant) · **Resend** · WhatsApp Business Cloud API · **Vercel**
 
-Prisma, Auth.js, Firebase, and separate object storage are intentionally excluded from the initial architecture.
+Prisma, Auth.js, and Supabase are intentionally excluded from the architecture.
 
 ## Documentation
 
 | Doc | Purpose |
 | --- | --- |
 | [DEVELOPMENT_PLAN.md](./DEVELOPMENT_PLAN.md) | Product scope, phases, rules |
-| [ARCHITECTURE.md](./ARCHITECTURE.md) | Supabase-first system design |
+| [ARCHITECTURE.md](./ARCHITECTURE.md) | Firebase-first system design |
 | [TASKS.md](./TASKS.md) | Phase checklist |
 | [.env.example](./.env.example) | Required environment variables |
+| [firestore.rules](./firestore.rules) | Firestore security rules |
 
 ## Getting started
 
 ```bash
 npm install
 cp .env.example .env.local
-# Fill NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY, SUPABASE_SECRET_KEY
-```
-
-### Local Supabase (optional, requires Docker)
-
-```bash
-npm run db:start
-# Apply migrations via supabase db reset / migration up
-npm run db:types
+# Fill NEXT_PUBLIC_FIREBASE_* and Firebase Admin credentials
 ```
 
 ### App
@@ -58,16 +51,16 @@ npm run build
 
 Completed in-repo:
 
-- Supabase client utilities + Next.js 16 proxy session refresh
-- Public landing page with brand system
-- `leads` migration (RLS default deny)
+- Firebase client + Admin utilities + Next.js 16 proxy session stub
+- Public landing + about page + OpenAI assistant
+- Firestore `leads` model with default-deny rules
 - Secure consultation endpoint (`POST /api/leads`)
 
-To persist leads end-to-end, configure a Supabase project, apply `supabase/migrations`, and set env vars. Never expose `SUPABASE_SECRET_KEY` to the browser.
+To persist leads end-to-end, set Firebase Admin env vars in `.env.local` and publish `firestore.rules`. Never expose Admin credentials to the browser.
 
 ## Security notes
 
-- Privileged clients live in server-only modules (`admin.ts`)
-- Lead records are not readable via public Supabase policies
+- Privileged clients live in server-only modules (`src/lib/firebase/admin.ts`)
+- Lead records are not readable or writable via the client SDK
 - Rate limiting + honeypot on public lead submission
 - Ask for approval before Phase 2 (authentication & administration)

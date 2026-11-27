@@ -28,13 +28,8 @@ export function DiasporaCta() {
                   For the Diaspora
                 </p>
                 <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-                  Trusted providers. Managed for you.
+                  Trusted contractors. Managed for you.
                 </h2>
-                <p className="mt-3 text-sm leading-relaxed text-white/65">
-                  Building or renovating from abroad? We verify service
-                  providers, select with you, and manage the project so your
-                  property stays in control.
-                </p>
               </div>
               <ConsultationModal
                 trigger={

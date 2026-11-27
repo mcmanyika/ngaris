@@ -16,14 +16,13 @@ type ChatMessage = {
 const STARTER: ChatMessage = {
   id: "welcome",
   role: "assistant",
-  content:
-    "Hi — I’m the Ngaris Construction assistant. Ask about verified providers, selecting a team with us, or how we manage projects from abroad.",
+  content: "Hi — ask about contractors, selection, or project management.",
 };
 
 const SUGGESTIONS = [
-  "How do you verify providers?",
+  "How do you verify contractors?",
   "Can you manage a build from the diaspora?",
-  "How does provider selection work?",
+  "How does contractor selection work?",
 ];
 
 function createId() {
@@ -130,14 +129,9 @@ export function SiteChatbot() {
       {open ? (
         <div className="pointer-events-auto flex h-[min(34rem,calc(100vh-6.5rem))] w-[min(24rem,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border border-[#032842]/10 bg-white shadow-[0_24px_60px_rgba(3,40,66,0.22)]">
           <div className="flex items-start justify-between gap-3 bg-[#022848] px-4 py-3.5 text-white">
-            <div>
-              <p className="text-sm font-semibold tracking-tight">
-                Ngaris Assistant
-              </p>
-              <p className="mt-0.5 text-[11px] text-white/65">
-                Providers · selection · managed projects
-              </p>
-            </div>
+            <p className="text-sm font-semibold tracking-tight">
+              Ngaris Assistant
+            </p>
             <button
               type="button"
               aria-label="Close chat"
@@ -218,7 +212,7 @@ export function SiteChatbot() {
                 rows={1}
                 value={input}
                 disabled={pending}
-                placeholder="Ask about providers or management…"
+                placeholder="Ask about contractors or management…"
                 className="max-h-28 min-h-10 flex-1 resize-none rounded-xl border border-[#032842]/12 bg-[#F7F9FB] px-3 py-2.5 text-sm text-[#032842] outline-none placeholder:text-[#032842]/40 focus:border-[#EDB254] focus:ring-2 focus:ring-[#EDB254]/20"
                 onChange={(event) => setInput(event.target.value)}
                 onKeyDown={(event) => {
