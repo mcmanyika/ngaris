@@ -122,6 +122,40 @@ export async function listProviders(options?: {
   return snap.docs.map((doc) => mapProvider(doc.id, doc.data()));
 }
 
+/** Public directory fields only — no contact or private details. */
+export type PublicProviderSummary = {
+  id: string;
+  companyName: string;
+  trade: string;
+  city: string;
+};
+
+export async function listVerifiedProvidersPublic(options?: {
+  limit?: number;
+}): Promise<PublicProviderSummary[]> {
+  await awaitRequestIo();
+  const db = getAdminFirestore();
+  const limit = options?.limit ?? 48;
+  const snap = await db
+    .collection("providers")
+    .where("verificationStatus", "==", "verified")
+    .limit(limit)
+    .get();
+
+  return snap.docs
+    .map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        companyName: String(data.companyName ?? ""),
+        trade: String(data.trade ?? ""),
+        city: String(data.city ?? ""),
+      };
+    })
+    .filter((item) => item.companyName.length > 0)
+    .sort((a, b) => a.companyName.localeCompare(b.companyName));
+}
+
 export async function updateProviderVerification(input: {
   providerId: string;
   status: ProviderVerificationStatus;
